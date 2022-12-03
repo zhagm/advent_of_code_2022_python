@@ -17,25 +17,12 @@ with open("test_input.txt") as f:
 # scissors > paper
 # paper > rock
 
-
-def rock_paper_scissors(opp, you):
-    if opp == you:
-        return 3
-    if opp == 1 and you == 2:
-        return 6
-    if opp == 2 and you == 3:
-        return 6
-    if opp == 3 and you == 1:
-        return 6
-    return 0
-
-
 def part_1(rounds):
     score = 0
-    points_map = { 'X': 1, 'Y': 2, 'Z': 3, 'A': 1, 'B': 2, 'C': 3 }
+    points_map = { 'X': 1, 'Y': 2, 'Z': 3 }
+    score_map = { 'A X': 3, 'A Y': 6, 'B Y': 3, 'B Z': 6, 'C Z': 3, 'C X': 6 }
     for round in rounds:
-        [opp_play, your_play] = [points_map[r] for r in round.split(' ')]
-        score = score + your_play + rock_paper_scissors(opp_play, your_play)
+        score = score + points_map[round[-1]] + (score_map[round] if round in score_map else 0)
     return score
 
 print('Part 1: ', part_1(input))
