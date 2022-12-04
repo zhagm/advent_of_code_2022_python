@@ -1,4 +1,4 @@
-with open("input.txt") as f:
+with open("data/day02_input.txt") as f:
     input = f.read().splitlines()
 
 def part_1(rounds):

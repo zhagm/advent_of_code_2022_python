@@ -1,4 +1,4 @@
-with open("input.txt") as f:
+with open("data/day01_input.txt") as f:
     input = f.read()
 
 def part_1(input):
