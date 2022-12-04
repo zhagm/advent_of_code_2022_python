@@ -1,10 +1,6 @@
 with open("input.txt") as f:
     input = f.read().splitlines()
 
-
-with open("test_input.txt") as f:
-    test_input = f.read().splitlines()
-
 # A for Rock, B for Paper, and C for Scissors
 # X for Rock, Y for Paper, and Z for Scissors
 # Your total score is the sum of your scores for each round.
@@ -34,30 +30,11 @@ print('Part 1: ', part_1(input))
 # C > B
 # B > A
 
-def get_move(opp, outcome):
-    if (outcome == 'Y'):
-        return opp
-    if (outcome == 'Z'):
-        if (opp == 'A'):
-            return 'B'
-        if (opp == 'B'):
-            return 'C'
-        if (opp == 'C'):
-            return 'A'
-    if (outcome == 'X'):
-        if (opp == 'A'):
-            return 'C'
-        if (opp == 'B'):
-            return 'A'
-        if (opp == 'C'):
-            return 'B'
-
 def part_2(rounds):
     score = 0
-    points_map = { 'X': 0, 'Y': 3, 'Z': 6, 'A': 1, 'B': 2, 'C': 3 }
+    points_map = { 'X': 0, 'Y': 3, 'Z': 6, 'A X': 3, 'A Y': 1, 'A Z': 2, 'B X': 1, 'B Y': 2, 'B Z': 3, 'C X': 2, 'C Y': 3, 'C Z': 1 }
     for round in rounds:
-        [opp, outcome] = round.split(' ')
-        score = score + points_map[outcome] + points_map[get_move(opp, outcome)]
+        score = score + points_map[round[-1]] + points_map[round]
     return score
 
 print('Part 2: ', part_2(input))
