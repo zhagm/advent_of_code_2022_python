@@ -3,6 +3,7 @@ with open("data/day01_input.txt") as f:
 
 def part_1(input):
     groups = input.split('\n\n')
+    max = 0
     for group in groups:
         total = sum([int(item) for item in group.split('\n')])
         if total > max:
@@ -10,7 +11,6 @@ def part_1(input):
     return max
 
 print('Part 1: ', part_1(input))
-
 
 def part_2(input):
     groups = input.split('\n\n')
