@@ -14,10 +14,8 @@ def part_1(rows, cols):
     for row in rows[1:-1]:
         col_index = 1
         for tree in row[1:-1]:
-            if (tree > max(row[:col_index])) or \
-                (tree > max(row[col_index + 1:])) or \
-                (tree > max(cols[col_index][:row_index])) or \
-                (tree > max(cols[col_index][row_index + 1:])):
+            if (tree > max(row[:col_index])) or (tree > max(row[col_index + 1:])) or \
+                (tree > max(cols[col_index][:row_index])) or (tree > max(cols[col_index][row_index + 1:])):
                 visible_trees.append(tree)
             col_index += 1
         row_index += 1
@@ -26,17 +24,16 @@ def part_1(rows, cols):
 
 print('Part 1: ', part_1(ROWS, COLS))
 
-def get_scenic_score(tree, trees_list):
+def get_scenic_score(tree, row, cols, x, y):
+    four_directions = [row[:y][::-1], row[y + 1:], cols[y][:x][::-1], cols[y][x + 1:]]
     score = 1
-    view_scores = []
-    for trees in trees_list:
-        trees_score = 0
+    for trees in four_directions:
+        view_score = 0
         try:
-            trees_score = next(i for i,t in enumerate(trees) if t >= tree) + 1
+            view_score = next(i for i,t in enumerate(trees) if t >= tree) + 1
         except:
-            trees_score = len(trees)
-        view_scores.append(trees_score)
-        score *= trees_score
+            view_score = len(trees)
+        score *= view_score
     return score
 
 def part_2(rows, cols):
@@ -45,7 +42,7 @@ def part_2(rows, cols):
     for row in rows[1:-1]:
         col_index = 1
         for tree in row[1:-1]:
-            score = get_scenic_score(tree, [row[:col_index][::-1], row[col_index + 1:], cols[col_index][:row_index][::-1], cols[col_index][row_index + 1:]])
+            score = get_scenic_score(tree, row, cols, row_index, col_index)
             if score > max_score:
                 max_score = score
             col_index += 1
