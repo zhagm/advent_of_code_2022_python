@@ -9,8 +9,9 @@ class Point:
         self.name = name
         self.x = x
         self.y = y
-        self.visited = { F"{x},{y}": True } if track_visited else None
-    
+        self.visited = {F"{x},{y}"} if track_visited else None
+
+
     def move(self, dir):
         if dir == 'U':
             self.y += 1
@@ -20,8 +21,7 @@ class Point:
             self.y -= 1
         elif dir == 'L':
             self.x -= 1
-        if self.visited:
-            self.visited[F"{self.x},{self.y}"] = True
+
 
     def follow(self, other):
         x_diff = self.x - other.x
@@ -32,25 +32,27 @@ class Point:
         # If they are touching, skip moving
         if x_diff_abs <= 1 and y_diff_abs <= 1:
             return
-
-        if x_diff_abs >= 1 and y_diff_abs >= 1:
-            self.x += 1 if x_diff < 0 else -1
-            self.y += 1 if y_diff < 0 else -1
-        elif x_diff_abs > 1:
-            self.x += 1 if x_diff < 0 else -1
-        elif y_diff_abs > 1:
-            self.y += 1 if y_diff < 0 else -1
-        if self.visited:
-            self.visited[F"{self.x},{self.y}"] = True
         
-    
+        x_move = 'R' if x_diff < 0 else 'L'
+        y_move = 'U' if y_diff < 0 else 'D'
+        if x_diff_abs >= 1 and y_diff_abs >= 1:
+            self.move(x_move)
+            self.move(y_move)
+        elif x_diff_abs > 1:
+            self.move(x_move)
+        elif y_diff_abs > 1:
+            self.move(y_move)
+        if self.visited:
+            self.visited.add(F"{self.x},{self.y}")
+
+
     def print(self, others):
-        max_x = max(self.x, *[o.x for o in others]) + 1
-        max_y = max(self.y,  *[o.y for o in others]) + 1
+        max_x = max(self.x, *[o.x for o in others])
+        max_y = max(self.y,  *[o.y for o in others])
         min_x = min(self.x, *[o.x for o in others])
         min_y = min(self.y,  *[o.y for o in others])
-        grid_x = range(min_x, max_x)
-        grid_y = range(min_y, max_y)[::-1]
+        grid_x = range(min_x, max_x + 1)
+        grid_y = range(min_y, max_y + 1)[::-1]
 
         grid = []
         for y in grid_y:
@@ -68,22 +70,10 @@ class Point:
         print('\n'.join([''.join(row) for row in grid]), '\n')
 
 
-def part_1(input):
+def day_9(moves, knots_count):
     H = Point('H', 0, 0)
-    T = Point('T', 0, 0, True)
-    for [dir, steps] in input:
-        for i in range(steps):
-            H.move(dir)
-            T.follow(H)
-    return len(T.visited.values())
-
-
-print('Part 1: ', part_1(input))
-
-def part_2(input):
-    H = Point('H', 0, 0)
-    others = [Point(str(i + 1), 0, 0, True if i == 8 else False) for i in range(9)]
-    for [dir, steps] in input:
+    others = [Point(str(i), 0, 0, True if i == knots_count else False) for i in range(1, knots_count + 1)]
+    for [dir, steps] in moves:
         for i in range(steps):
             H.move(dir)
             prev = H
@@ -92,4 +82,5 @@ def part_2(input):
                 prev = point
     return len(others[-1].visited)
 
-print('Part 2: ', part_2(input))
+print('Part 1: ', day_9(input, 1))
+print('Part 2: ', day_9(input, 9))
