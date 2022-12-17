@@ -22,7 +22,7 @@ def part_1(rows, cols):
     perimeter = (2 * (len(rows) + len(rows[0])) - 4)
     return len(visible_trees) + perimeter
 
-print('Part 1: ', part_1(ROWS, COLS))
+#print('Part 1: ', part_1(ROWS, COLS))
 
 def get_scenic_score(tree, row, cols, x, y):
     four_directions = [row[:y][::-1], row[y + 1:], cols[y][:x][::-1], cols[y][x + 1:]]
